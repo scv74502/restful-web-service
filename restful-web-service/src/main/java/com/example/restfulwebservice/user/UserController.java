@@ -1,5 +1,6 @@
 package com.example.restfulwebservice.user;
 
+import com.sun.istack.ByteArrayDataSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -52,5 +53,21 @@ public class UserController {
         if (user == null){
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
         }
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<User> modifyUser(@PathVariable int id, @RequestBody User user){
+        User modifiedUser = service.modifyById(id, user.getName());
+
+        if (modifiedUser == null){
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(modifiedUser.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }
