@@ -1,5 +1,8 @@
 package com.example.restfulwebservice.user;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -9,6 +12,8 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
+//@JsonIgnoreProperties(value = {"password", "ssn"})
+@JsonFilter("UserInfo")
 public class User {
     private Integer id;
 
@@ -18,4 +23,7 @@ public class User {
     // 현재 시간보다 과거 시간만 사용할 수 있도록 제한함
     @Past
     private Date joinDate;
+
+    private String password;
+    private String ssn;
 }
