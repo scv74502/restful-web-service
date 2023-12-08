@@ -1,6 +1,21 @@
 server:
   port: 8088
+
+logging:
+  level:
+    org.springframework: debug
+
 spring:
+  messages:
+    basename: messages
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+management:
+  # 개발 시에는 include에 전체를 설정, 실제로는 지양해야 함
+  endpoints:
+    web:
+      exposure:
+        include: "*"
