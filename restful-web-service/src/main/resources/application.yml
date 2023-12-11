@@ -13,6 +13,11 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+  security:
+    user:
+      name: username
+      password: password
+
 management:
   # 개발 시에는 include에 전체를 설정, 실제로는 지양해야 함
   endpoints:

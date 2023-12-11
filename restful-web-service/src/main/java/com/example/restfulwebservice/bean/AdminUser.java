@@ -1,7 +1,6 @@
-package com.example.restfulwebservice.user;
+package com.example.restfulwebservice.bean;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,18 +13,17 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//@JsonIgnoreProperties(value = {"password", "ssn"})
-//@JsonFilter("UserInfo")
-public class User {
+@JsonFilter("UserInfo")
+public class AdminUser {
     private Integer id;
 
-    @Size(min=2, message = "Name은 2글자 이상 입력해 주세요.")
+    @Size(min = 2, message = "Name은 2글자 이상 입력해 주세요")
     private String name;
 
-    // 현재 시간보다 과거 시간만 사용할 수 있도록 제한함
-    @Past
+    @Past(message = "등록일은 미래 날짜를 입력하실 수 없습니다")
     private Date joinDate;
 
+    // 1. 각 어노테이션에 @JsonIgnore 어노테이션
     private String password;
     private String ssn;
 }

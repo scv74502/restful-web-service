@@ -1,5 +1,7 @@
-package com.example.restfulwebservice.user;
+package com.example.restfulwebservice.dao;
 
+import com.example.restfulwebservice.bean.HelloWorldBean;
+import com.example.restfulwebservice.bean.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
