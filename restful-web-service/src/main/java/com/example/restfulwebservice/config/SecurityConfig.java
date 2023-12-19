@@ -36,6 +36,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer(){
         // 인증 무시하는 로직, webflux나 reactive 부분에서 사용되는 체이닝 코드
         return (web) -> web.ignoring().
-                requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
+                requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
+                .requestMatchers(new AntPathRequestMatcher("/jpa/**"));
     }
 }
