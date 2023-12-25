@@ -36,9 +36,10 @@ public class User {
     private Date joinDate;
 
     // 1. 각 어노테이션에 @JsonIgnore 어노테이션
-    @Schema(title="사용자 비밀번호", description = "사용자 비밀번호를 입력합니")
+    @Schema(title="사용자 비밀번호", description = "사용자 비밀번호를 입력합니다.")
     private String password;
-    @Schema(title="사용자 주민번", description = "사용자 주민번호를 입력합니")
+
+    @Schema(title="사용자 주민번호", description = "사용자 주민번호를 입력합니다.")
     private String ssn;
 
     @OneToMany(mappedBy = "user")

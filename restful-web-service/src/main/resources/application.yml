@@ -27,6 +27,9 @@ spring:
       ddl-auto: create-drop
     show-sql: true
     defer-datasource-initialization: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
 
   h2:
     console:
