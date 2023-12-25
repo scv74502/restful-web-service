@@ -1,5 +1,6 @@
 package com.example.restfulwebservice.Controller;
 
+import com.example.restfulwebservice.bean.Post;
 import com.example.restfulwebservice.bean.User;
 import com.example.restfulwebservice.exception.UserNotFoundException;
 import com.example.restfulwebservice.exception.UsersAndCountResponse;
@@ -36,13 +37,22 @@ public class UserJPAController {
         return userRepository.findAll();
     }
 
+    // ResponseEntity를 사옹한 정답 코드
     @GetMapping("/usersAndCount")
-    public UsersAndCountResponse retrieveAllUsersAndCount(){
+    public ResponseEntity retrieveAllUsersAndCount(){
         List<User> users = userRepository.findAll();
         int count = users.size();
-        System.out.println(new UsersAndCountResponse(count, users));
 
-        return new UsersAndCountResponse(count, users);
+        UsersAndCountResponse result = UsersAndCountResponse.builder()
+                .count(users.isEmpty() ? 0 : users.size())
+                .users(users)
+                .build();
+
+        EntityModel entityModel = EntityModel.of(result);
+        WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+        entityModel.add(linkTo.withSelfRel());
+
+        return ResponseEntity.ok(entityModel);
     }
 
     // jpa/users/{id}
@@ -85,5 +95,14 @@ public class UserJPAController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/users/{id}/posts")
+    public List<Post> retrieveAllPostByUser(@PathVariable int id){
+        Optional<User> user = userRepository.findById(id);
+        if(!user.isPresent()){
+            throw new UserNotFoundException("id-" + id + " user not found");
+        }
+        return user.get().getPosts();
     }
 }
