@@ -4,10 +4,12 @@ import com.example.restfulwebservice.bean.Post;
 import com.example.restfulwebservice.bean.User;
 import com.example.restfulwebservice.exception.UserNotFoundException;
 import com.example.restfulwebservice.exception.UsersAndCountResponse;
+import com.example.restfulwebservice.repository.PostRepository;
 import com.example.restfulwebservice.repository.UserRepository;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -17,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static java.time.LocalTime.now;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -26,6 +27,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserJPAController {
 
     private UserRepository userRepository;
+    private PostRepository postRepository;
 
     public UserJPAController(UserRepository userRepository){
         this.userRepository = userRepository;
@@ -104,5 +106,27 @@ public class UserJPAController {
             throw new UserNotFoundException("id-" + id + " user not found");
         }
         return user.get().getPosts();
+    }
+
+    @PostMapping("/users/{id}/posts")
+    public ResponseEntity<Post> createPost(@PathVariable int id, @RequestBody Post post) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent()) {
+            throw new UserNotFoundException("id-" + id);
+        }
+
+        User user = userOptional.get();
+
+        post.setUser(user);
+
+        postRepository.save(post);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(post.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }

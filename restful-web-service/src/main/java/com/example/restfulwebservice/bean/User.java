@@ -31,7 +31,6 @@ public class User {
     private String name;
 
     @Schema(title="사용자 등록일", description = "사용자 등록일을 입력합니다. 입력하지 않으면 현재 날짜가 지정됩니다")
-    @ColumnDefault("now()")
     @Past(message = "등록일은 미래 날짜를 입력하실 수 없습니다")
     private Date joinDate;
 
