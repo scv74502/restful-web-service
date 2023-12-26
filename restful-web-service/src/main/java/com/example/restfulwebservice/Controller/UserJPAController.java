@@ -29,8 +29,9 @@ public class UserJPAController {
     private UserRepository userRepository;
     private PostRepository postRepository;
 
-    public UserJPAController(UserRepository userRepository){
+    public UserJPAController(UserRepository userRepository, PostRepository postRepository){
         this.userRepository = userRepository;
+        this.postRepository = postRepository;
     }
 
     // /jpa/users
