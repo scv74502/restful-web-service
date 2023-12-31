@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 //@JsonIgnoreProperties(value = {"password", "ssn"})
 @JsonFilter("UserInfoV2")
-public class UserV2 extends HelloWorldBean.User {
+public class UserV2 extends User {
     private String grade;
 }
